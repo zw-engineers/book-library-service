@@ -1,17 +1,20 @@
-package com.kotlin.example.booklibraryservice.controller
+package com.kotlin.example.booklibraryservice.controller.integration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+@ExtendWith(SpringExtension::class)
 @WebMvcTest
 class LibraryEndpointIntegrationTest(
         @Autowired
