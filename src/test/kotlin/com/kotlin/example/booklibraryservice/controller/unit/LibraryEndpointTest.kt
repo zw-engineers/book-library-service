@@ -3,14 +3,16 @@ package com.kotlin.example.booklibraryservice.controller.unit
 import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
 import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.dto.Book
+import com.kotlin.example.booklibraryservice.exception.BookNotValidException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.service.LibraryService
 import com.kotlin.example.booklibraryservice.service.LibraryServiceImpl
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
-import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 
@@ -39,8 +41,8 @@ class LibraryEndpointTest {
     fun `Should throw an InvalidBook exception when A Book is not valid`() {
         val bookJson = null
 
-        library.addBook(bookJson)
+        val exception = assertThrows<BookNotValidException> { library.addBook(bookJson) }
 
-        verify<LibraryService?>(libraryServiceMock, never())
+        assertThat(exception.message).isEqualTo("Book is not Valid")
     }
 }

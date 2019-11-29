@@ -2,6 +2,7 @@ package com.kotlin.example.booklibraryservice.mapper
 
 import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.dto.Book
+import com.kotlin.example.booklibraryservice.exception.BookNotValidException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import org.assertj.core.api.Assertions.assertThat
@@ -29,6 +30,8 @@ internal class BookMapperTest() {
 
     @Test
     fun `Should thrown an exception when Book is not valid`() {
-        assertThrows<RuntimeException> { BookMapper.bookJsonToDto(null) }
+        val exception = assertThrows<BookNotValidException> { BookMapper.bookJsonToDto(null) }
+
+        assertThat(exception.message).isEqualTo("Book is not Valid")
     }
 }
