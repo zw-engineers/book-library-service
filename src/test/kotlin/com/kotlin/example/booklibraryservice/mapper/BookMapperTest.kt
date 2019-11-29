@@ -5,13 +5,12 @@ import com.kotlin.example.booklibraryservice.dto.Book
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class BookMapperTest() {
     @Test
-    @DisplayName("Should map BookJson to DTO")
-    fun bookJsonToDTO() {
+    fun `Should map BookJson to DTO`() {
         val isbn = "123ABC"
         val title = "fly to the moon"
         val authorJson = AuthorJson("artemas", "smith")
@@ -26,5 +25,10 @@ internal class BookMapperTest() {
         assertThat(book.title).isEqualTo(title)
         assertThat(book.author).isEqualTo(author)
         assertThat(book.yearPublished).isEqualTo(yearPublished)
+    }
+
+    @Test
+    fun `Should thrown an exception when Book is not valid`() {
+        assertThrows<RuntimeException> { BookMapper.bookJsonToDto(null) }
     }
 }

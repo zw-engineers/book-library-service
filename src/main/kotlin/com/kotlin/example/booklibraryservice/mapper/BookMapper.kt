@@ -5,7 +5,8 @@ import com.kotlin.example.booklibraryservice.json.BookJson
 
 class BookMapper {
     companion object {
-        fun bookJsonToDto(bookJson: BookJson): Book {
+        fun bookJsonToDto(bookJson: BookJson?): Book {
+            bookJson.
             return Book(bookJson.isbn, bookJson.title, AuthorMapper.authorJsonToDto(bookJson.author), bookJson.yearPublished)
         }
     }
