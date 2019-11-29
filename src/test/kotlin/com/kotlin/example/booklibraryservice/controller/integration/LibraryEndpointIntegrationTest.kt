@@ -5,7 +5,6 @@ import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.service.LibraryServiceImpl
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,8 +23,7 @@ class LibraryEndpointIntegrationTest {
     @MockBean lateinit var libraryServiceImpl: LibraryServiceImpl
 
     @Test
-    @DisplayName("Should add a book to the library")
-    fun addBook() {
+    fun `Should add a book to the library`() {
         val isbn = "123AAD"
         val title = "Fly to the moon"
         val author = AuthorJson("Artemas", "Muzanenhamo")
