@@ -38,4 +38,6 @@ class LibraryEndpointIntegrationTest {
                 .content(json))
                 .andExpect(status().isOk)
     }
+
+    // TODO: Add case when BookNotValidException is thrown
 }
