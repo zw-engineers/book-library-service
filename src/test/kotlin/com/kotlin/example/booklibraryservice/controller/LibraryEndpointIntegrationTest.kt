@@ -1,11 +1,8 @@
 package com.kotlin.example.booklibraryservice.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
-import net.minidev.json.JSONObject
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
