@@ -13,7 +13,7 @@ class LibraryEndpoint(
 ) {
 
     @PostMapping("/book")
-    fun addBook(@RequestBody bookJson: BookJson) {
+    fun addBook(@RequestBody bookJson: BookJson?) {
         val book = BookMapper.bookJsonToDto(bookJson)
         libraryService.addBook(book)
     }
