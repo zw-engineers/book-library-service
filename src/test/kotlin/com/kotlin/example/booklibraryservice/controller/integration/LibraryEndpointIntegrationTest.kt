@@ -55,4 +55,21 @@ class LibraryEndpointIntegrationTest {
                 .content(json))
                 .andExpect(status().isBadRequest)
     }
+
+    @Test
+    fun `Should throw AuthorNotValidException`() {
+        val isbn = "123AAD"
+        val title = "Fly to the moon"
+        val author = AuthorJson(null, "Muzanenhamo")
+        val yearPublished: Long = 2004
+        val book = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isBadRequest)
+    }
 }
