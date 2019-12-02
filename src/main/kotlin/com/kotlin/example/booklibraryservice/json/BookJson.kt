@@ -4,5 +4,5 @@ data class BookJson(
         val isbn: String?,
         val title: String?,
         val author: AuthorJson?,
-        val yearPublished: Long
+        val yearPublished: Long?
 )
