@@ -14,8 +14,9 @@ class BookMapper {
                     ?: throw BookNotValidException("Book title is missing. Please provide a title for your book")
             val yearPublished = bookJson.yearPublished
                     ?: throw BookNotValidException("Book published year is missing")
+            val author = AuthorMapper.authorJsonToDto(bookJson.author)
 
-            return Book(isbn, title, AuthorMapper.authorJsonToDto(bookJson.author), yearPublished)
+            return Book(isbn, title, author, yearPublished)
         }
     }
 }
