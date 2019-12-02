@@ -29,4 +29,14 @@ class AuthorMapperTest {
 
         assertThat(exception.message).isEqualTo("Author name is missing. Please provide a name for the Author")
     }
+
+    @Test
+    fun `Should throw an Exception when an author surname is missing`() {
+        val name = "artemas"
+        val authorJson = AuthorJson(name, null)
+
+        val exception = assertThrows<AuthorNotValidException> { AuthorMapper.authorJsonToDto(authorJson) }
+
+        assertThat(exception.message).isEqualTo("Author surname is missing. Please provide a surname for the Author")
+    }
 }
