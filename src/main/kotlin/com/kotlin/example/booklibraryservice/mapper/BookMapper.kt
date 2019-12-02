@@ -8,6 +8,7 @@ class BookMapper {
     companion object {
         fun bookJsonToDto(bookJson: BookJson?): Book {
             bookJson?: throw BookNotValidException("Book is not Valid")
+            bookJson.title?: throw BookNotValidException("Book title is missing. Please provide a title for your book")
             return Book(bookJson.isbn, bookJson.title, AuthorMapper.authorJsonToDto(bookJson.author), bookJson.yearPublished)
         }
     }
