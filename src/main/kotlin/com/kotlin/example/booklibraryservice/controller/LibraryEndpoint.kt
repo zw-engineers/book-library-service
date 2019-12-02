@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class LibraryEndpoint(
-        private val libraryService: LibraryService
-) {
+class LibraryEndpoint(private val libraryService: LibraryService) {
 
     @PostMapping("/book")
     fun addBook(@RequestBody bookJson: BookJson?) {

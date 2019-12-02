@@ -41,6 +41,18 @@ internal class BookMapperTest() {
     }
 
     @Test
+    fun `Should throw an exception when Book does not have an isbn value`() {
+        val title = "fly to the moon"
+        val authorJson = AuthorJson("artemas", "smith")
+        val yearPublished: Long = 2004
+        val bookJson = BookJson(null, title, authorJson, yearPublished)
+
+        val exception = assertThrows<BookNotValidException> { BookMapper.bookJsonToDto(bookJson) }
+
+        assertThat(exception.message).isEqualTo("Book ISBN is missing. Please provide an ISBN for your book")
+    }
+
+    @Test
     fun `Should throw an exception when Book is not valid`() {
         val exception = assertThrows<BookNotValidException> { BookMapper.bookJsonToDto(null) }
 
