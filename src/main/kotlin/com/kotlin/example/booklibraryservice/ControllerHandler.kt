@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ControllerHandler : Logging {
 
     @ExceptionHandler(BookNotValidException::class)
-    fun handleBookNotValidException(ex: BookNotValidException): ResponseEntity<ApiError> {
-        logger.info(ex.message!!)
+    fun handleBookNotValidException(exception: BookNotValidException): ResponseEntity<ApiError> {
+        logger.info(exception.message!!)
         return ResponseEntity(ApiError("Book is not valid"), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(AuthorNotValidException::class)
-    fun handleAuthorNotValidException(ex: AuthorNotValidException): ResponseEntity<ApiError> {
-        logger.info(ex.message!!)
+    fun handleAuthorNotValidException(exception: AuthorNotValidException): ResponseEntity<ApiError> {
+        logger.info(exception.message!!)
         return ResponseEntity(ApiError("Author is not valid"), HttpStatus.BAD_REQUEST)
     }
 }
