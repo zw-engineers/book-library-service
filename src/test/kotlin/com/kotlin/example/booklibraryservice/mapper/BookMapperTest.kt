@@ -2,6 +2,7 @@ package com.kotlin.example.booklibraryservice.mapper
 
 import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.dto.Book
+import com.kotlin.example.booklibraryservice.exception.AuthorNotValidException
 import com.kotlin.example.booklibraryservice.exception.BookNotValidException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
@@ -9,7 +10,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-internal class BookMapperTest() {
+internal class BookMapperTest {
     @Test
     fun `Should map BookJson to DTO`() {
         val isbn = "123ABC"
@@ -56,13 +57,38 @@ internal class BookMapperTest() {
     fun `Should throw an exception when Book does not have an author value`() {
         val isbn = "123ABC"
         val title = "fly to the moon"
-        val authorJson = AuthorJson("artemas", "smith")
         val yearPublished: Long = 2004
+        val bookJson = BookJson(isbn, title, null, yearPublished)
+
+        val exception = assertThrows<AuthorNotValidException> { BookMapper.bookJsonToDto(bookJson) }
+
+        assertThat(exception.message).isEqualTo("Author is invalid. Please provide a valid Author")
+    }
+
+    @Test
+    fun `Should throw an exception when Book does not have an author name`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val yearPublished: Long = 2004
+        val authorJson = AuthorJson(null, "smith")
         val bookJson = BookJson(isbn, title, authorJson, yearPublished)
 
-        val exception = assertThrows<BookNotValidException> { BookMapper.bookJsonToDto(bookJson) }
+        val exception = assertThrows<AuthorNotValidException> { BookMapper.bookJsonToDto(bookJson) }
 
-        assertThat(exception.message).isEqualTo("Book ISBN is missing. Please provide an ISBN for your book")
+        assertThat(exception.message).isEqualTo("Author name is missing. Please provide a name for the Author")
+    }
+
+    @Test
+    fun `Should throw an exception when Book does not have an author surname`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val yearPublished: Long = 2004
+        val authorJson = AuthorJson("artemas", null)
+        val bookJson = BookJson(isbn, title, authorJson, yearPublished)
+
+        val exception = assertThrows<AuthorNotValidException> { BookMapper.bookJsonToDto(bookJson) }
+
+        assertThat(exception.message).isEqualTo("Author surname is missing. Please provide a surname for the Author")
     }
 
     @Test

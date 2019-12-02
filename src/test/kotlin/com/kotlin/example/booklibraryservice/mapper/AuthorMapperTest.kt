@@ -21,6 +21,13 @@ class AuthorMapperTest {
     }
 
     @Test
+    fun `Should throw an Exception when an author passed is not valid or null`() {
+        val exception = assertThrows<AuthorNotValidException> { AuthorMapper.authorJsonToDto(null) }
+
+        assertThat(exception.message).isEqualTo("Author is invalid. Please provide a valid Author")
+    }
+
+    @Test
     fun `Should throw an Exception when an author name is missing`() {
         val surname = "muzanenhamo"
         val authorJson = AuthorJson(null, surname)
