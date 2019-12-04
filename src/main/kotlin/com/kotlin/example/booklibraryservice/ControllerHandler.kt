@@ -14,12 +14,12 @@ class ControllerHandler : Logging {
     @ExceptionHandler(BookNotValidException::class)
     fun handleBookNotValidException(exception: BookNotValidException): ResponseEntity<ApiError> {
         logger.info(exception.message!!)
-        return ResponseEntity(ApiError("Book is not valid"), HttpStatus.BAD_REQUEST)
+        return ResponseEntity(ApiError(exception.message!!), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(AuthorNotValidException::class)
     fun handleAuthorNotValidException(exception: AuthorNotValidException): ResponseEntity<ApiError> {
         logger.info(exception.message!!)
-        return ResponseEntity(ApiError("Author is not valid"), HttpStatus.BAD_REQUEST)
+        return ResponseEntity(ApiError(exception.message!!), HttpStatus.BAD_REQUEST)
     }
 }

@@ -55,7 +55,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
-                .andExpect(content().string(containsString("Book is not valid")))
+                .andExpect(content().string(containsString("Book ISBN is missing. Please provide an ISBN for your book")))
     }
 
     @Test
@@ -72,7 +72,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
-                .andExpect(content().string(containsString("Book is not valid")))
+                .andExpect(content().string(containsString("Book title is missing. Please provide a title for your book")))
     }
 
     @Test
@@ -90,7 +90,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
-                .andExpect(content().string(containsString("Author is not valid")))
+                .andExpect(content().string(containsString("Author name is missing. Please provide a name for the Author")))
     }
 
     @Test
@@ -108,7 +108,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
-                .andExpect(content().string(containsString("Author is not valid")))
+                .andExpect(content().string(containsString("Author name is missing. Please provide a name for the Author")))
     }
 
     @Test
@@ -126,7 +126,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
-                .andExpect(content().string(containsString("Author is not valid")))
+                .andExpect(content().string(containsString("Author surname is missing. Please provide a surname for the Author")))
     }
 
     @Test
@@ -143,6 +143,6 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
-                .andExpect(content().string(containsString("Book is not valid")))
+                .andExpect(content().string(containsString("Book published year is missing")))
     }
 }
