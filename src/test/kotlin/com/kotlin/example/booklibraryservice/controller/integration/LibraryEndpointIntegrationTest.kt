@@ -5,6 +5,7 @@ import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.service.LibraryServiceImpl
+import org.hamcrest.core.StringContains.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
@@ -53,6 +55,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("Book ISBN is missing. Please provide an ISBN for your book")))
     }
 
     @Test
@@ -69,6 +72,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("Book title is missing. Please provide a title for your book")))
     }
 
     @Test
@@ -86,6 +90,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("Author name is missing. Please provide a name for the Author")))
     }
 
     @Test
@@ -103,6 +108,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("Author name is missing. Please provide a name for the Author")))
     }
 
     @Test
@@ -120,6 +126,7 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("Author surname is missing. Please provide a surname for the Author")))
     }
 
     @Test
@@ -136,5 +143,6 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("Book published year is missing")))
     }
 }

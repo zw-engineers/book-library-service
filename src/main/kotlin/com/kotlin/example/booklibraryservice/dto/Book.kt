@@ -1,6 +1,11 @@
 package com.kotlin.example.booklibraryservice.dto
 
+import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.mongodb.core.mapping.MongoId
+
+@Document(collection = "books")
 class Book(
+        @MongoId
         val isbn: String,
         val title: String,
         val author: Author,
