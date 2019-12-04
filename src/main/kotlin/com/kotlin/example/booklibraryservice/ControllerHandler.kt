@@ -13,13 +13,15 @@ class ControllerHandler : Logging {
 
     @ExceptionHandler(BookNotValidException::class)
     fun handleBookNotValidException(exception: BookNotValidException): ResponseEntity<ApiError> {
-        logger.info(exception.message!!)
-        return ResponseEntity(ApiError(exception.message!!), HttpStatus.BAD_REQUEST)
+        val message = exception.localizedMessage
+        logger.info(message)
+        return ResponseEntity(ApiError(message), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(AuthorNotValidException::class)
     fun handleAuthorNotValidException(exception: AuthorNotValidException): ResponseEntity<ApiError> {
-        logger.info(exception.message!!)
-        return ResponseEntity(ApiError(exception.message!!), HttpStatus.BAD_REQUEST)
+        val message = exception.localizedMessage
+        logger.info(message)
+        return ResponseEntity(ApiError(message), HttpStatus.BAD_REQUEST)
     }
 }
