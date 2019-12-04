@@ -41,7 +41,6 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw BookNotValidException when ISBN is null`() {
-        val isbn = "123AAD"
         val title = "Fly to the moon"
         val author = AuthorJson("Artemas", "Muzanenhamo")
         val yearPublished: Long = 2004
@@ -59,7 +58,6 @@ class LibraryEndpointIntegrationTest {
     @Test
     fun `Should throw BookNotValidException when title is null`() {
         val isbn = "123AAD"
-        val title = "Fly to the moon"
         val author = AuthorJson("Artemas", "Muzanenhamo")
         val yearPublished: Long = 2004
         val book = BookJson(isbn, null, author, yearPublished)
@@ -74,12 +72,62 @@ class LibraryEndpointIntegrationTest {
     }
 
     @Test
-    fun `Should throw AuthorNotValidException`() {
+    fun `Should throw AuthorNotValidException when author is null`() {
         val isbn = "123AAD"
         val title = "Fly to the moon"
         val author = AuthorJson(null, "Muzanenhamo")
         val yearPublished: Long = 2004
         val book = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `Should throw AuthorNotValidException when Author name is null`() {
+        val isbn = "123AAD"
+        val title = "Fly to the moon"
+        val author = AuthorJson(null, "Muzanenhamo")
+        val yearPublished: Long = 2004
+        val book = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `Should throw AuthorNotValidException when Author surname is null`() {
+        val isbn = "123AAD"
+        val title = "Fly to the moon"
+        val author = AuthorJson("artemas", null)
+        val yearPublished: Long = 2004
+        val book = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `Should throw BookNotValidException when YearPublished is null`() {
+        val isbn = "123AAD"
+        val title = "Fly to the moon"
+        val author = AuthorJson("artemas", "muzanenhamo")
+        val book = BookJson(isbn, title, author, null)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
 
