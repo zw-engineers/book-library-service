@@ -145,4 +145,21 @@ class LibraryEndpointIntegrationTest {
                 .andExpect(status().isBadRequest)
                 .andExpect(content().string(containsString("Book published year is missing")))
     }
+
+    @Test
+    fun `Should edit an existing book in the library`() {
+        val isbn = "123AAD"
+        val title = "Fly to the moon"
+        val author = AuthorJson("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val book = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book/edit")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isOk)
+    }
 }

@@ -15,4 +15,10 @@ class LibraryEndpoint(private val libraryService: LibraryService) {
         val book = BookMapper.bookJsonToDto(bookJson)
         libraryService.addBook(book)
     }
+
+    @PostMapping("/book/edit")
+    fun editBook(@RequestBody bookJson: BookJson?) {
+        val book = BookMapper.bookJsonToDto(bookJson)
+        libraryService.editBook(book)
+    }
 }

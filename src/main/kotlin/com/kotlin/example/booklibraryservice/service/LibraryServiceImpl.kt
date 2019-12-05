@@ -9,4 +9,8 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
     override fun addBook(book: Book) {
         libraryRepository.save(book)
     }
+
+    override fun editBook(book: Book) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
