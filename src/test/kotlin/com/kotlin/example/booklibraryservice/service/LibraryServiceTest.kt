@@ -17,10 +17,14 @@ class LibraryServiceTest {
 
     private val libraryRepositoryMock = mock(LibraryRepository::class.java)
     private val libraryServiceImpl = LibraryServiceImpl(libraryRepositoryMock)
+    private val isbn = "123ABC"
+    private val title = "fly to the moon"
+    private val author = Author("Artemas", "Muzanenhamo")
+    private val yearPublished: Long = 2008
+    private val book: Book = Book(isbn, title, author, yearPublished)
 
     @Test
     fun `Should add book to library`() {
-        val book = Book("123ABC", "fly to the moon", Author("Artemas", "Muzanenhamo"), 2008)
 
         libraryServiceImpl.addBook(book)
 
@@ -29,7 +33,6 @@ class LibraryServiceTest {
 
     @Test
     fun `Should update an existing book`() {
-        val book = Book("123ABC", "fly to the moon", Author("Artemas", "Muzanenhamo"), 2008)
         `when`(libraryRepositoryMock.findById(book.isbn)).thenReturn(Optional.of(book))
 
         libraryServiceImpl.editBook(book)
@@ -39,7 +42,6 @@ class LibraryServiceTest {
 
     @Test
     fun `Should throw an exception when updating a book that does not exist`() {
-        val book = Book("789XYZ", "fly to the moon", Author("Artemas", "Muzanenhamo"), 2008)
         `when`(libraryRepositoryMock.findById(book.isbn)).thenReturn(Optional.empty())
 
         val exception = assertThrows<BookDoesNotExistsException> { libraryServiceImpl.editBook(book) }
