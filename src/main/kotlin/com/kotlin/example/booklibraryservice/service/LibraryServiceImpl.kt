@@ -1,6 +1,7 @@
 package com.kotlin.example.booklibraryservice.service
 
 import com.kotlin.example.booklibraryservice.dto.Book
+import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
 import com.kotlin.example.booklibraryservice.repository.LibraryRepository
 import org.springframework.stereotype.Service
 
@@ -11,6 +12,9 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
     }
 
     override fun editBook(book: Book) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        libraryRepository.findById(book.isbn)
+                .orElseThrow { throw BookDoesNotExistsException("The book you are updating does not exist") }
+
+        libraryRepository.save(book)
     }
 }
