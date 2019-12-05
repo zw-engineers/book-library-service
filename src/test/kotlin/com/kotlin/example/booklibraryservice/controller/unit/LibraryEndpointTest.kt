@@ -45,4 +45,19 @@ class LibraryEndpointTest {
 
         assertThat(exception.message).isEqualTo("Book is not Valid")
     }
+
+    @Test
+    fun `Should edit an existing Book`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val authorJson = AuthorJson("artemas", "smith")
+        val yearPublished: Long = 2004
+        val bookJson = BookJson(isbn, title, authorJson, yearPublished)
+        val author = Author("artemas", "smith")
+        val book = Book(isbn, title, author, yearPublished)
+
+        library.editBook(bookJson)
+
+        verify<LibraryService?>(libraryServiceMock)?.editBook(book)
+    }
 }

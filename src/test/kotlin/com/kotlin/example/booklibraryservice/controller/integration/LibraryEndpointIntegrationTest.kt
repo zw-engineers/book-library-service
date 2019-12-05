@@ -23,13 +23,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class LibraryEndpointIntegrationTest {
     @Autowired lateinit var mockMvc: MockMvc
     @MockBean lateinit var libraryServiceImpl: LibraryServiceImpl
+    private val isbn = "123AAD"
+    private val title = "Fly to the moon"
+    private val author = AuthorJson("Artemas", "Muzanenhamo")
+    private val yearPublished: Long = 2004
 
     @Test
     fun `Should add a book to the library`() {
-        val isbn = "123AAD"
-        val title = "Fly to the moon"
-        val author = AuthorJson("Artemas", "Muzanenhamo")
-        val yearPublished: Long = 2004
         val book = BookJson(isbn, title, author, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
@@ -43,9 +43,6 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw BookNotValidException when ISBN is null`() {
-        val title = "Fly to the moon"
-        val author = AuthorJson("Artemas", "Muzanenhamo")
-        val yearPublished: Long = 2004
         val book = BookJson(null, title, author, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
@@ -60,9 +57,6 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw BookNotValidException when title is null`() {
-        val isbn = "123AAD"
-        val author = AuthorJson("Artemas", "Muzanenhamo")
-        val yearPublished: Long = 2004
         val book = BookJson(isbn, null, author, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
@@ -77,10 +71,7 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw AuthorNotValidException when author is null`() {
-        val isbn = "123AAD"
-        val title = "Fly to the moon"
         val author = AuthorJson(null, "Muzanenhamo")
-        val yearPublished: Long = 2004
         val book = BookJson(isbn, title, author, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
@@ -95,10 +86,7 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw AuthorNotValidException when Author name is null`() {
-        val isbn = "123AAD"
-        val title = "Fly to the moon"
         val author = AuthorJson(null, "Muzanenhamo")
-        val yearPublished: Long = 2004
         val book = BookJson(isbn, title, author, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
@@ -113,10 +101,7 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw AuthorNotValidException when Author surname is null`() {
-        val isbn = "123AAD"
-        val title = "Fly to the moon"
         val author = AuthorJson("artemas", null)
-        val yearPublished: Long = 2004
         val book = BookJson(isbn, title, author, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
@@ -131,8 +116,6 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw BookNotValidException when YearPublished is null`() {
-        val isbn = "123AAD"
-        val title = "Fly to the moon"
         val author = AuthorJson("artemas", "muzanenhamo")
         val book = BookJson(isbn, title, author, null)
         val mapper = jacksonObjectMapper()
@@ -144,5 +127,20 @@ class LibraryEndpointIntegrationTest {
                 .content(json))
                 .andExpect(status().isBadRequest)
                 .andExpect(content().string(containsString("Book published year is missing")))
+    }
+
+    @Test
+    fun `Should edit an existing book in the library`() {
+        val author = AuthorJson("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val book = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book/edit")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isOk)
     }
 }
