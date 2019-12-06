@@ -37,6 +37,7 @@ class LibraryServiceTest {
 
         libraryServiceImpl.editBook(book)
 
+        verify(libraryRepositoryMock).findById(isbn)
         verify(libraryRepositoryMock).save(book)
     }
 
