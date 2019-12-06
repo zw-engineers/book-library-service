@@ -5,4 +5,5 @@ import com.kotlin.example.booklibraryservice.dto.Book
 interface LibraryService {
     fun addBook(book: Book)
     fun editBook(book: Book)
+    fun deleteBook(book: Book)
 }

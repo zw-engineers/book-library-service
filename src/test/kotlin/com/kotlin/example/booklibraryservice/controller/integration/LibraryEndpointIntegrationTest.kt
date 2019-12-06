@@ -143,4 +143,19 @@ class LibraryEndpointIntegrationTest {
                 .content(json))
                 .andExpect(status().isOk)
     }
+
+    @Test
+    fun `Should delete an existing book in the library`() {
+        val author = AuthorJson("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val book = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/book/remove")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isOk)
+    }
 }
