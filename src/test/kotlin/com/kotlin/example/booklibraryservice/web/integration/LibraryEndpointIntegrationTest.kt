@@ -1,12 +1,12 @@
-package com.kotlin.example.booklibraryservice.controller.integration
+package com.kotlin.example.booklibraryservice.web.integration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
 import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.mapper.BookMapper
 import com.kotlin.example.booklibraryservice.service.LibraryServiceImpl
+import com.kotlin.example.booklibraryservice.web.LibraryEndpoint
 import org.hamcrest.core.StringContains.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

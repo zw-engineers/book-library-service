@@ -1,4 +1,4 @@
-package com.kotlin.example.booklibraryservice.controller
+package com.kotlin.example.booklibraryservice.web
 
 import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.mapper.BookMapper

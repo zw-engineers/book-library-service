@@ -1,6 +1,5 @@
-package com.kotlin.example.booklibraryservice.controller.unit
+package com.kotlin.example.booklibraryservice.web.unit
 
-import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
 import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.dto.Book
 import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
@@ -9,6 +8,7 @@ import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.service.LibraryService
 import com.kotlin.example.booklibraryservice.service.LibraryServiceImpl
+import com.kotlin.example.booklibraryservice.web.LibraryEndpoint
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
