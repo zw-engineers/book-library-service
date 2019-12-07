@@ -3,6 +3,7 @@ package com.kotlin.example.booklibraryservice.controller.unit
 import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
 import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.dto.Book
+import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
 import com.kotlin.example.booklibraryservice.exception.BookNotValidException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
+import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 
@@ -73,6 +75,23 @@ class LibraryEndpointTest {
 
         library.deleteBook(bookJson)
 
+        verify<LibraryService?>(libraryServiceMock)?.deleteBook(book)
+    }
+
+    @Test
+    fun `Should throw an exception when trying to delete a non existing Book`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val authorJson = AuthorJson("artemas", "smith")
+        val yearPublished: Long = 2004
+        val bookJson = BookJson(isbn, title, authorJson, yearPublished)
+        val author = Author("artemas", "smith")
+        val book = Book(isbn, title, author, yearPublished)
+        doAnswer { throw BookDoesNotExistsException("The book you are deleting does not exist") }.`when`(libraryServiceMock).deleteBook(book)
+
+        val exception = assertThrows<BookDoesNotExistsException> { library.deleteBook(bookJson) }
+
+        assertThat(exception.message).isEqualTo("The book you are deleting does not exist")
         verify<LibraryService?>(libraryServiceMock)?.deleteBook(book)
     }
 }
