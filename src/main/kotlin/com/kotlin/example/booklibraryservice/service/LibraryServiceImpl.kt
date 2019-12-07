@@ -24,6 +24,7 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
     }
 
     private fun validateIfBookExists(book: Book, message: String) {
-        libraryRepository.findById(book.isbn).orElseThrow { throw BookDoesNotExistsException(message) }
+        libraryRepository.findById(book.isbn)
+                .orElseThrow { throw BookDoesNotExistsException(message) }
     }
 }
