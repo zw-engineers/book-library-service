@@ -2,12 +2,15 @@ package com.kotlin.example.booklibraryservice.controller.integration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
+import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
+import com.kotlin.example.booklibraryservice.mapper.BookMapper
 import com.kotlin.example.booklibraryservice.service.LibraryServiceImpl
 import org.hamcrest.core.StringContains.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mockito.doAnswer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -142,6 +145,24 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Should throw an exception when trying to edit a non existing book in the library`() {
+        val author = AuthorJson("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val bookJson = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(bookJson)
+        val book = BookMapper.bookJsonToDto(bookJson)
+        doAnswer{ throw BookDoesNotExistsException("The book you are editing does not exist") }.`when`(libraryServiceImpl).editBook(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book/edit")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("The book you are editing does not exist")))
     }
 
     @Test
