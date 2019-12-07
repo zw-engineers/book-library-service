@@ -1,13 +1,16 @@
-package com.kotlin.example.booklibraryservice.controller.integration
+package com.kotlin.example.booklibraryservice.web.integration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.kotlin.example.booklibraryservice.controller.LibraryEndpoint
+import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
+import com.kotlin.example.booklibraryservice.mapper.BookMapper
 import com.kotlin.example.booklibraryservice.service.LibraryServiceImpl
+import com.kotlin.example.booklibraryservice.web.LibraryEndpoint
 import org.hamcrest.core.StringContains.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mockito.doAnswer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -21,8 +24,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(LibraryEndpoint::class)
 class LibraryEndpointIntegrationTest {
-    @Autowired lateinit var mockMvc: MockMvc
-    @MockBean lateinit var libraryServiceImpl: LibraryServiceImpl
+    @Autowired
+    lateinit var mockMvc: MockMvc
+    @MockBean
+    lateinit var libraryServiceImpl: LibraryServiceImpl
     private val isbn = "123AAD"
     private val title = "Fly to the moon"
     private val author = AuthorJson("Artemas", "Muzanenhamo")
@@ -145,6 +150,24 @@ class LibraryEndpointIntegrationTest {
     }
 
     @Test
+    fun `Should throw an exception when trying to edit a non existing book in the library`() {
+        val author = AuthorJson("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val bookJson = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(bookJson)
+        val book = BookMapper.bookJsonToDto(bookJson)
+        doAnswer { throw BookDoesNotExistsException("The book you are editing does not exist") }.`when`(libraryServiceImpl).editBook(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book/edit")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("The book you are editing does not exist")))
+    }
+
+    @Test
     fun `Should delete an existing book in the library`() {
         val author = AuthorJson("artemas", "muzanenhamo")
         val yearPublished: Long = 2008
@@ -157,5 +180,23 @@ class LibraryEndpointIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Should thrown an exception when trying to delete a non existing book in the library`() {
+        val author = AuthorJson("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val bookJson = BookJson(isbn, title, author, yearPublished)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(bookJson)
+        val book = BookMapper.bookJsonToDto(bookJson)
+        doAnswer { throw BookDoesNotExistsException("The book you are deleting does not exist") }.`when`(libraryServiceImpl).deleteBook(book)
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/book/remove")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
+                .andExpect(status().isBadRequest)
+                .andExpect(content().string(containsString("The book you are deleting does not exist")))
     }
 }

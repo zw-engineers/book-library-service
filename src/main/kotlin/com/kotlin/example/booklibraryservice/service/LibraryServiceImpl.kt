@@ -12,13 +12,19 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
     }
 
     override fun editBook(book: Book) {
-        libraryRepository.findById(book.isbn)
-                .orElseThrow { throw BookDoesNotExistsException("The book you are updating does not exist") }
-
+        val message = "The book you are updating does not exist"
+        validateIfBookExists(book, message)
         libraryRepository.save(book)
     }
 
     override fun deleteBook(book: Book) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val message = "The book you are deleting does not exist"
+        validateIfBookExists(book, message)
+        libraryRepository.delete(book)
+    }
+
+    private fun validateIfBookExists(book: Book, message: String) {
+        libraryRepository.findById(book.isbn)
+                .orElseThrow { throw BookDoesNotExistsException(message) }
     }
 }

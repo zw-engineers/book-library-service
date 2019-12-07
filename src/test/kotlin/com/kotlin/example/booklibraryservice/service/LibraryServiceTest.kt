@@ -33,10 +33,11 @@ class LibraryServiceTest {
 
     @Test
     fun `Should update an existing book`() {
-        `when`(libraryRepositoryMock.findById(book.isbn)).thenReturn(Optional.of(book))
+        `when`(libraryRepositoryMock.findById(isbn)).thenReturn(Optional.of(book))
 
         libraryServiceImpl.editBook(book)
 
+        verify(libraryRepositoryMock).findById(isbn)
         verify(libraryRepositoryMock).save(book)
     }
 
@@ -47,5 +48,28 @@ class LibraryServiceTest {
         val exception = assertThrows<BookDoesNotExistsException> { libraryServiceImpl.editBook(book) }
 
         assertThat(exception.message).isEqualTo("The book you are updating does not exist")
+        verify(libraryRepositoryMock).findById(isbn)
+        verify(libraryRepositoryMock, never()).delete(book)
+    }
+
+    @Test
+    fun `Should delete an existing book`() {
+        `when`(libraryRepositoryMock.findById(isbn)).thenReturn(Optional.of(book))
+
+        libraryServiceImpl.deleteBook(book)
+
+        verify(libraryRepositoryMock).findById(isbn)
+        verify(libraryRepositoryMock).delete(book)
+    }
+
+    @Test
+    fun `Should thrown an exception when deleting a book that does not exist`() {
+        `when`(libraryRepositoryMock.findById(isbn)).thenReturn(Optional.empty())
+
+        val exception = assertThrows<BookDoesNotExistsException> { libraryServiceImpl.deleteBook(book) }
+
+        assertThat(exception.message).isEqualTo("The book you are deleting does not exist")
+        verify(libraryRepositoryMock).findById(isbn)
+        verify(libraryRepositoryMock, never()).delete(book)
     }
 }
