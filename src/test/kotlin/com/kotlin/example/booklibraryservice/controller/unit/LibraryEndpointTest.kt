@@ -64,6 +64,23 @@ class LibraryEndpointTest {
     }
 
     @Test
+    fun `Should thrown an exception when trying to edit a non existing Book`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val authorJson = AuthorJson("artemas", "smith")
+        val yearPublished: Long = 2004
+        val bookJson = BookJson(isbn, title, authorJson, yearPublished)
+        val author = Author("artemas", "smith")
+        val book = Book(isbn, title, author, yearPublished)
+        doAnswer { throw BookDoesNotExistsException("The book you are editing does not exist") }.`when`(libraryServiceMock).editBook(book)
+
+        val exception = assertThrows<BookDoesNotExistsException> { library.editBook(bookJson) }
+
+        assertThat(exception.message).isEqualTo("The book you are editing does not exist")
+        verify<LibraryService?>(libraryServiceMock)?.editBook(book)
+    }
+
+    @Test
     fun `Should delete an existing Book`() {
         val isbn = "123ABC"
         val title = "fly to the moon"
