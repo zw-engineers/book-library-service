@@ -14,8 +14,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
-import org.mockito.Mockito.doAnswer
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 
 
@@ -110,5 +109,29 @@ class LibraryEndpointTest {
 
         assertThat(exception.message).isEqualTo("The book you are deleting does not exist")
         verify<LibraryService?>(libraryServiceMock)?.deleteBook(book)
+    }
+
+    @Test
+    fun `Should return all books in the library`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val name = "artemas"
+        val surname = "smith"
+        val authorJson = AuthorJson(name, surname)
+        val yearPublished: Long = 2004
+        val author = Author(name, surname)
+        val book = Book(isbn, title, author, yearPublished)
+        val booksList = listOf(book)
+        `when`(libraryServiceMock.getAllBooks()).thenReturn(booksList)
+
+        val bookJsonList = library.getAllBooks()
+
+        assertThat(bookJsonList).isNotEmpty
+        val bookJson = bookJsonList.first()
+        assertThat(bookJson).isNotNull
+        assertThat(bookJson.isbn).isEqualTo(isbn)
+        assertThat(bookJson.title).isEqualTo(title)
+        assertThat(bookJson.author).isEqualTo(authorJson)
+        assertThat(bookJson.yearPublished).isEqualTo(yearPublished)
     }
 }

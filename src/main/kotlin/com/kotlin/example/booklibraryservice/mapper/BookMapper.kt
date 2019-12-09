@@ -18,5 +18,15 @@ class BookMapper {
 
             return Book(isbn, title, author, yearPublished)
         }
+
+        fun bookDtoToJson(book: Book): BookJson {
+            return BookJson(book.isbn, book.title, AuthorMapper.authorDtoToJson(book.author), book.yearPublished)
+        }
+
+        fun booksDtoToJson(books: List<Book>): List<BookJson> {
+            return books
+                    .map { book -> bookDtoToJson(book) }
+                    .toList()
+        }
     }
 }

@@ -23,6 +23,10 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
         libraryRepository.delete(book)
     }
 
+    override fun getAllBooks(): List<Book> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private fun validateIfBookExists(book: Book, message: String) {
         libraryRepository.findById(book.isbn)
                 .orElseThrow { throw BookDoesNotExistsException(message) }
