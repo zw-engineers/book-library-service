@@ -6,4 +6,5 @@ interface LibraryService {
     fun addBook(book: Book)
     fun editBook(book: Book)
     fun deleteBook(book: Book)
+    fun getAllBooks(): List<Book>
 }

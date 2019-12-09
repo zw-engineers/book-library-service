@@ -199,4 +199,10 @@ class LibraryEndpointIntegrationTest {
                 .andExpect(status().isBadRequest)
                 .andExpect(content().string(containsString("The book you are deleting does not exist")))
     }
+
+    @Test
+    fun `Should view a list of all book in the library`() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/books"))
+                .andExpect(status().isOk)
+    }
 }

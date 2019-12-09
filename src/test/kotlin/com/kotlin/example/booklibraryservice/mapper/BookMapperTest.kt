@@ -109,4 +109,31 @@ internal class BookMapperTest {
 
         assertThat(exception.message).isEqualTo("Book is not Valid")
     }
+
+    @Test
+    fun `Should map a BookDTO to a BookJson`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val author = Author("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val book = Book(isbn, title, author, yearPublished)
+
+        val bookJson = BookMapper.bookDtoToJson(book)
+
+        assertThat(bookJson).isNotNull
+    }
+
+    @Test
+    fun `Should map a list of books to a list of booksJson`() {
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val author = Author("artemas", "muzanenhamo")
+        val yearPublished: Long = 2008
+        val book = Book(isbn, title, author, yearPublished)
+        val booksDTO = listOf(book)
+
+        val booksJson = BookMapper.booksDtoToJson(booksDTO)
+
+        assertThat(booksJson).isNotEmpty
+    }
 }
