@@ -15,5 +15,9 @@ class AuthorMapper {
 
             return Author(name, surname)
         }
+
+        fun authorDtoToJson(author: Author): AuthorJson {
+            return AuthorJson(author.name, author.surname)
+        }
     }
 }

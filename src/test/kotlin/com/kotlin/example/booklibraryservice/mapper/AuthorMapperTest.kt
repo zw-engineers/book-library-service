@@ -1,5 +1,6 @@
 package com.kotlin.example.booklibraryservice.mapper
 
+import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.exception.AuthorNotValidException
 import com.kotlin.example.booklibraryservice.json.AuthorJson
 import org.assertj.core.api.Assertions.assertThat
@@ -45,5 +46,18 @@ class AuthorMapperTest {
         val exception = assertThrows<AuthorNotValidException> { AuthorMapper.authorJsonToDto(authorJson) }
 
         assertThat(exception.message).isEqualTo("Author surname is missing. Please provide a surname for the Author")
+    }
+
+    @Test
+    fun `Should map AuthorDTO to AuthorJson`() {
+        val name = "artemas"
+        val surname = "muzanenhamo"
+        val author = Author(name, surname)
+
+        val authorJson = AuthorMapper.authorDtoToJson(author)
+
+        assertThat(authorJson).isNotNull
+        assertThat(authorJson.name).isEqualTo(name)
+        assertThat(authorJson.surname).isEqualTo(surname)
     }
 }

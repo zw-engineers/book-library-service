@@ -114,26 +114,43 @@ internal class BookMapperTest {
     fun `Should map a BookDTO to a BookJson`() {
         val isbn = "123ABC"
         val title = "fly to the moon"
-        val author = Author("artemas", "muzanenhamo")
+        val name = "artemas"
+        val surname = "muzanenhamo"
+        val author = Author(name, surname)
         val yearPublished: Long = 2008
         val book = Book(isbn, title, author, yearPublished)
+        val authorJson = AuthorJson(name, surname)
 
         val bookJson = BookMapper.bookDtoToJson(book)
 
         assertThat(bookJson).isNotNull
+        assertThat(bookJson.isbn).isEqualTo(isbn)
+        assertThat(bookJson.title).isEqualTo(title)
+        assertThat(bookJson.author).isEqualTo(authorJson)
+        assertThat(bookJson.yearPublished).isEqualTo(yearPublished)
     }
 
     @Test
     fun `Should map a list of books to a list of booksJson`() {
         val isbn = "123ABC"
         val title = "fly to the moon"
-        val author = Author("artemas", "muzanenhamo")
+        val name = "artemas"
+        val surname = "muzanenhamo"
+        val author = Author(name, surname)
         val yearPublished: Long = 2008
         val book = Book(isbn, title, author, yearPublished)
         val booksDTO = listOf(book)
+        val authorJson = AuthorJson(name, surname)
 
         val booksJson = BookMapper.booksDtoToJson(booksDTO)
 
         assertThat(booksJson).isNotEmpty
+        assertThat(booksJson).hasSize(1)
+        val bookJson = booksJson.first()
+        assertThat(bookJson).isNotNull
+        assertThat(bookJson.isbn).isEqualTo(isbn)
+        assertThat(bookJson.title).isEqualTo(title)
+        assertThat(bookJson.author).isEqualTo(authorJson)
+        assertThat(bookJson.yearPublished).isEqualTo(yearPublished)
     }
 }

@@ -20,7 +20,7 @@ class BookMapper {
         }
 
         fun bookDtoToJson(book: Book): BookJson {
-            TODO("to be implemented...")
+            return BookJson(book.isbn, book.title, AuthorMapper.authorDtoToJson(book.author), book.yearPublished)
         }
 
         fun booksDtoToJson(books: List<Book>): List<BookJson> {

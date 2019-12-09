@@ -113,8 +113,25 @@ class LibraryEndpointTest {
 
     @Test
     fun `Should return all books in the library`() {
-        val books = library.getAllBooks()
+        val isbn = "123ABC"
+        val title = "fly to the moon"
+        val name = "artemas"
+        val surname = "smith"
+        val authorJson = AuthorJson(name, surname)
+        val yearPublished: Long = 2004
+        val author = Author(name, surname)
+        val book = Book(isbn, title, author, yearPublished)
+        val booksList = listOf(book)
+        `when`(libraryServiceMock.getAllBooks()).thenReturn(booksList)
 
-        assertThat(books).isNotEmpty
+        val bookJsonList = library.getAllBooks()
+
+        assertThat(bookJsonList).isNotEmpty
+        val bookJson = bookJsonList.first()
+        assertThat(bookJson).isNotNull
+        assertThat(bookJson.isbn).isEqualTo(isbn)
+        assertThat(bookJson.title).isEqualTo(title)
+        assertThat(bookJson.author).isEqualTo(authorJson)
+        assertThat(bookJson.yearPublished).isEqualTo(yearPublished)
     }
 }
