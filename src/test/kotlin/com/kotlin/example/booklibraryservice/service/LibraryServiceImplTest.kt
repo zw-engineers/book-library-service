@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
-class LibraryServiceTest {
+class LibraryServiceImplTest {
 
     private val libraryRepositoryMock = mock(LibraryRepository::class.java)
     private val libraryServiceImpl = LibraryServiceImpl(libraryRepositoryMock)
@@ -71,5 +71,21 @@ class LibraryServiceTest {
         assertThat(exception.message).isEqualTo("The book you are deleting does not exist")
         verify(libraryRepositoryMock).findById(isbn)
         verify(libraryRepositoryMock, never()).delete(book)
+    }
+
+    @Test
+    fun `Should retrieve all books in the library`() {
+        val book = Book(isbn, title, author, yearPublished)
+        val books = listOf(book)
+        `when`(libraryRepositoryMock.findAll()).thenReturn(books)
+
+        val booksList = libraryServiceImpl.getAllBooks()
+
+        assertThat(booksList).isNotEmpty
+        val firstBook = booksList.first()
+        assertThat(firstBook.isbn).isEqualTo(isbn)
+        assertThat(firstBook.title).isEqualTo(title)
+        assertThat(firstBook.author).isEqualTo(author)
+        assertThat(firstBook.yearPublished).isEqualTo(yearPublished)
     }
 }
