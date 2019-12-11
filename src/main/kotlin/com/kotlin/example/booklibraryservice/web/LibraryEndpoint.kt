@@ -1,5 +1,6 @@
 package com.kotlin.example.booklibraryservice.web
 
+import com.kotlin.example.booklibraryservice.exception.AuthorNameNotValidException
 import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.mapper.BookMapper
 import com.kotlin.example.booklibraryservice.service.LibraryService
@@ -30,5 +31,11 @@ class LibraryEndpoint(private val libraryService: LibraryService) {
     fun getAllBooks(): List<BookJson> {
         val books = libraryService.getAllBooks()
         return BookMapper.booksDtoToJson(books)
+    }
+
+    @GetMapping("/book")
+    fun getBookByAuthorName(@RequestParam name: String?): BookJson {
+        val validatedName = name?: throw AuthorNameNotValidException("Author name is not valid")
+        return libraryService.getBookByAuthorName(validatedName)
     }
 }

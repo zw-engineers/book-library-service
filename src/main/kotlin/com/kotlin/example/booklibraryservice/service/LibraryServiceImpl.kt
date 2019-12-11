@@ -2,6 +2,7 @@ package com.kotlin.example.booklibraryservice.service
 
 import com.kotlin.example.booklibraryservice.dto.Book
 import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
+import com.kotlin.example.booklibraryservice.json.BookJson
 import com.kotlin.example.booklibraryservice.repository.LibraryRepository
 import org.springframework.stereotype.Service
 
@@ -25,6 +26,10 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
 
     override fun getAllBooks(): List<Book> {
         return libraryRepository.findAll()
+    }
+
+    override fun getBookByAuthorName(name: String): BookJson {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun validateIfBookExists(book: Book, message: String) {

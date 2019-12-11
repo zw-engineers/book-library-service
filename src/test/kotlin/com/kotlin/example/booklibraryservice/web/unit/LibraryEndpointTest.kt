@@ -134,4 +134,13 @@ class LibraryEndpointTest {
         assertThat(bookJson.author).isEqualTo(authorJson)
         assertThat(bookJson.yearPublished).isEqualTo(yearPublished)
     }
+
+    @Test
+    fun `Should retrieve a book given an author`() {
+        val authorJson = AuthorJson("artemas", "muzanenhamo")
+
+        val bookJson = library.getBookByAuthorName(authorJson.name)
+
+        assertThat(bookJson).isNotNull
+    }
 }
