@@ -34,9 +34,10 @@ class LibraryEndpoint(private val libraryService: LibraryService) {
     }
 
     @GetMapping("/book")
-    fun getBookByAuthorName(@RequestParam("author-name") name: String?): BookJson {
+    fun getBookByAuthorName(@RequestParam("author-name") name: String?): List<BookJson> {
         val validatedName = validateAuthorName(name)
-        return libraryService.getBookByAuthorName(validatedName)
+        val bookList = libraryService.getBookByAuthorName(validatedName)
+        return BookMapper.booksDtoToJson(bookList)
     }
 
     private fun validateAuthorName(name: String?): String {
