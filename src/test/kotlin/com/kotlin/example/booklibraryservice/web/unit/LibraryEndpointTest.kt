@@ -13,22 +13,22 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 
 
 @ExtendWith(MockitoExtension::class)
 class LibraryEndpointTest {
-    private val libraryServiceMock: LibraryServiceImpl = Mockito.mock(LibraryServiceImpl::class.java)
+    private val libraryServiceMock: LibraryServiceImpl = mock(LibraryServiceImpl::class.java)
     private val library: LibraryEndpoint = LibraryEndpoint(libraryServiceMock)
+
+    private val isbn = "123ABC"
+    private val title = "fly to the moon"
+    private val authorJson = AuthorJson("artemas", "smith")
+    private val yearPublished: Long = 2004
 
     @Test
     fun `Should add a book to the library`() {
-        val isbn = "123ABC"
-        val title = "fly to the moon"
-        val authorJson = AuthorJson("artemas", "smith")
-        val yearPublished: Long = 2004
         val bookJson = BookJson(isbn, title, authorJson, yearPublished)
         val author = Author("artemas", "smith")
         val book = Book(isbn, title, author, yearPublished)
@@ -49,10 +49,6 @@ class LibraryEndpointTest {
 
     @Test
     fun `Should edit an existing Book`() {
-        val isbn = "123ABC"
-        val title = "fly to the moon"
-        val authorJson = AuthorJson("artemas", "smith")
-        val yearPublished: Long = 2004
         val bookJson = BookJson(isbn, title, authorJson, yearPublished)
         val author = Author("artemas", "smith")
         val book = Book(isbn, title, author, yearPublished)
@@ -64,10 +60,6 @@ class LibraryEndpointTest {
 
     @Test
     fun `Should thrown an exception when trying to edit a non existing Book`() {
-        val isbn = "123ABC"
-        val title = "fly to the moon"
-        val authorJson = AuthorJson("artemas", "smith")
-        val yearPublished: Long = 2004
         val bookJson = BookJson(isbn, title, authorJson, yearPublished)
         val author = Author("artemas", "smith")
         val book = Book(isbn, title, author, yearPublished)
@@ -81,10 +73,6 @@ class LibraryEndpointTest {
 
     @Test
     fun `Should delete an existing Book`() {
-        val isbn = "123ABC"
-        val title = "fly to the moon"
-        val authorJson = AuthorJson("artemas", "smith")
-        val yearPublished: Long = 2004
         val bookJson = BookJson(isbn, title, authorJson, yearPublished)
         val author = Author("artemas", "smith")
         val book = Book(isbn, title, author, yearPublished)
@@ -96,10 +84,6 @@ class LibraryEndpointTest {
 
     @Test
     fun `Should throw an exception when trying to delete a non existing Book`() {
-        val isbn = "123ABC"
-        val title = "fly to the moon"
-        val authorJson = AuthorJson("artemas", "smith")
-        val yearPublished: Long = 2004
         val bookJson = BookJson(isbn, title, authorJson, yearPublished)
         val author = Author("artemas", "smith")
         val book = Book(isbn, title, author, yearPublished)
@@ -125,6 +109,25 @@ class LibraryEndpointTest {
         `when`(libraryServiceMock.getAllBooks()).thenReturn(booksList)
 
         val bookJsonList = library.getAllBooks()
+
+        assertThat(bookJsonList).isNotEmpty
+        val bookJson = bookJsonList.first()
+        assertThat(bookJson).isNotNull
+        assertThat(bookJson.isbn).isEqualTo(isbn)
+        assertThat(bookJson.title).isEqualTo(title)
+        assertThat(bookJson.author).isEqualTo(authorJson)
+        assertThat(bookJson.yearPublished).isEqualTo(yearPublished)
+    }
+
+    @Test
+    fun `Should retrieve a book given an author`() {
+        val authorName = "artemas"
+        val author = Author("artemas", "smith")
+        val book = Book(isbn, title, author, yearPublished)
+        val booksList = listOf(book)
+        `when`(libraryServiceMock.getBookByAuthorName(authorName)).thenReturn(booksList)
+
+        val bookJsonList = library.getBookByAuthorName(authorName)
 
         assertThat(bookJsonList).isNotEmpty
         val bookJson = bookJsonList.first()

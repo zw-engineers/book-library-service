@@ -5,4 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface LibraryRepository : MongoRepository<Book, String>
+interface LibraryRepository : MongoRepository<Book, String> {
+    fun findAllByAuthor_Name(name: String): List<Book>
+}
