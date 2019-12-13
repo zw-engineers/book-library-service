@@ -32,4 +32,11 @@ class LibraryRepositoryTest(@Autowired private val libraryRepository: LibraryRep
         assertThat(booksByAuthorName).hasSize(2)
         assertThat(booksByAuthorName).containsExactlyInAnyOrder(book1, book5)
     }
+
+    @Test
+    fun `Should return no books if author name does not exist in the library`() {
+        val booksByAuthorName = libraryRepository.findAllByAuthor_Name("stacey")
+
+        assertThat(booksByAuthorName).isEmpty()
+    }
 }
