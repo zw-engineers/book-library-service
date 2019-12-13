@@ -26,7 +26,7 @@ class LibraryRepositoryTest(@Autowired private val libraryRepository: LibraryRep
 
     @Test
     fun `Should return books given the author name`() {
-        val booksByAuthorName = libraryRepository.findAllByAuthor_Name("artemas")
+        val booksByAuthorName = libraryRepository.findAllByAuthorName("artemas")
 
         assertThat(booksByAuthorName).isNotEmpty
         assertThat(booksByAuthorName).hasSize(2)
@@ -35,7 +35,7 @@ class LibraryRepositoryTest(@Autowired private val libraryRepository: LibraryRep
 
     @Test
     fun `Should return no books if author name does not exist in the library`() {
-        val booksByAuthorName = libraryRepository.findAllByAuthor_Name("stacey")
+        val booksByAuthorName = libraryRepository.findAllByAuthorName("stacey")
 
         assertThat(booksByAuthorName).isEmpty()
     }

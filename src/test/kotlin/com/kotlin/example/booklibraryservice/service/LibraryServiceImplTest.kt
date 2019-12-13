@@ -92,7 +92,7 @@ class LibraryServiceImplTest {
     @Test
     fun `Should retrieve a Book given the author name`() {
         val books = listOf(book)
-        `when`(libraryRepositoryMock.findAllByAuthor_Name(author.name)).thenReturn(books)
+        `when`(libraryRepositoryMock.findAllByAuthorName(author.name)).thenReturn(books)
 
         val bookList : List<Book> = libraryServiceImpl.getBookByAuthorName(author.name)
 

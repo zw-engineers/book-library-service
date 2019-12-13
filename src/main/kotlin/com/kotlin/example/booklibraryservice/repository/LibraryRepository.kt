@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface LibraryRepository : MongoRepository<Book, String> {
-    fun findAllByAuthor_Name(name: String): List<Book>
+    fun findAllByAuthorName(name: String): List<Book>
 }

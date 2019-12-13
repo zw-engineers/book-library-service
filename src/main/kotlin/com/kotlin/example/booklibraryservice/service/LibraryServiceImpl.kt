@@ -28,7 +28,7 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
     }
 
     override fun getBookByAuthorName(name: String): List<Book> {
-        return libraryRepository.findAllByAuthor_Name(name)
+        return libraryRepository.findAllByAuthorName(name)
     }
 
     private fun validateIfBookExists(book: Book, message: String) {
