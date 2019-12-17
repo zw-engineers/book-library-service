@@ -33,7 +33,7 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
     }
 
     override fun getBooksByAuthor(author: Author): List<Book> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return libraryRepository.findAllByAuthor(author)
     }
 
     private fun validateIfBookExists(book: Book, message: String) {

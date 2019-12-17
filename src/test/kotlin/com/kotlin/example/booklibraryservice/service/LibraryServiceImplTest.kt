@@ -98,4 +98,14 @@ class LibraryServiceImplTest {
 
         assertThat(bookList).isNotEmpty
     }
+
+    @Test
+    fun `Should retrieve Books given the Author`() {
+        val books = listOf(book)
+        `when`(libraryRepositoryMock.findAllByAuthor(author)).thenReturn(books)
+
+        val booksList = libraryServiceImpl.getBooksByAuthor(author)
+
+        assertThat(booksList).isNotEmpty
+    }
 }
