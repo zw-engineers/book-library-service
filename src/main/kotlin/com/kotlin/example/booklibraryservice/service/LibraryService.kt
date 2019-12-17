@@ -8,6 +8,6 @@ interface LibraryService {
     fun editBook(book: Book)
     fun deleteBook(book: Book)
     fun getAllBooks(): List<Book>
-    fun getBookByAuthorName(name: String): List<Book>
+    fun getBooksByAuthorName(name: String): List<Book>
     fun getBooksByAuthor(author: Author): List<Book>
 }

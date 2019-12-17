@@ -94,7 +94,7 @@ class LibraryServiceImplTest {
         val books = listOf(book)
         `when`(libraryRepositoryMock.findAllByAuthorName(author.name)).thenReturn(books)
 
-        val bookList : List<Book> = libraryServiceImpl.getBookByAuthorName(author.name)
+        val bookList : List<Book> = libraryServiceImpl.getBooksByAuthorName(author.name)
 
         assertThat(bookList).isNotEmpty
     }

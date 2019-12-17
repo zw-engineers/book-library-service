@@ -120,12 +120,12 @@ class LibraryEndpointTest {
     }
 
     @Test
-    fun `Should retrieve a book given an author's name`() {
+    fun `Should retrieve books given an author's name`() {
         val authorName = "artemas"
         val author = Author("artemas", "smith")
         val book = Book(isbn, title, author, yearPublished)
         val booksList = listOf(book)
-        `when`(libraryServiceMock.getBookByAuthorName(authorName)).thenReturn(booksList)
+        `when`(libraryServiceMock.getBooksByAuthorName(authorName)).thenReturn(booksList)
 
         val bookJsonList = library.getBookByAuthorName(authorName)
 

@@ -207,7 +207,7 @@ class LibraryEndpointIntegrationTest {
     }
 
     @Test
-    fun `Should view a book from a given author name`() {
+    fun `Should view a list of books from a given author name`() {
         mockMvc.perform(MockMvcRequestBuilders.get("/book")
                 .param("author-name", "artemas"))
                 .andExpect(status().isOk)

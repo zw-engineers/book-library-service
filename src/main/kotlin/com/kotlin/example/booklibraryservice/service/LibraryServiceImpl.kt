@@ -28,7 +28,7 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
         return libraryRepository.findAll()
     }
 
-    override fun getBookByAuthorName(name: String): List<Book> {
+    override fun getBooksByAuthorName(name: String): List<Book> {
         return libraryRepository.findAllByAuthorName(name)
     }
 
