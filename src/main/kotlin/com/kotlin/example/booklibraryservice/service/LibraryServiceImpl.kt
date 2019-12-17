@@ -1,5 +1,6 @@
 package com.kotlin.example.booklibraryservice.service
 
+import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.dto.Book
 import com.kotlin.example.booklibraryservice.exception.BookDoesNotExistsException
 import com.kotlin.example.booklibraryservice.repository.LibraryRepository
@@ -29,6 +30,10 @@ class LibraryServiceImpl(val libraryRepository: LibraryRepository) : LibraryServ
 
     override fun getBookByAuthorName(name: String): List<Book> {
         return libraryRepository.findAllByAuthorName(name)
+    }
+
+    override fun getBooksByAuthor(author: Author): List<Book> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun validateIfBookExists(book: Book, message: String) {

@@ -1,5 +1,6 @@
 package com.kotlin.example.booklibraryservice.service
 
+import com.kotlin.example.booklibraryservice.dto.Author
 import com.kotlin.example.booklibraryservice.dto.Book
 
 interface LibraryService {
@@ -8,4 +9,5 @@ interface LibraryService {
     fun deleteBook(book: Book)
     fun getAllBooks(): List<Book>
     fun getBookByAuthorName(name: String): List<Book>
+    fun getBooksByAuthor(author: Author): List<Book>
 }

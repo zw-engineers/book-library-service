@@ -1,7 +1,9 @@
 package com.kotlin.example.booklibraryservice.web
 
 import com.kotlin.example.booklibraryservice.exception.AuthorNameNotValidException
+import com.kotlin.example.booklibraryservice.json.AuthorJson
 import com.kotlin.example.booklibraryservice.json.BookJson
+import com.kotlin.example.booklibraryservice.mapper.AuthorMapper
 import com.kotlin.example.booklibraryservice.mapper.BookMapper
 import com.kotlin.example.booklibraryservice.service.LibraryService
 import org.springframework.web.bind.annotation.*
@@ -38,6 +40,13 @@ class LibraryEndpoint(private val libraryService: LibraryService) {
         val validatedName = validateAuthorName(name)
         val bookList = libraryService.getBookByAuthorName(validatedName)
         return BookMapper.booksDtoToJson(bookList)
+    }
+
+    @PostMapping("/book/author")
+    fun getBookByAuthor(@RequestBody authorJson: AuthorJson): List<BookJson> {
+        val author = AuthorMapper.authorJsonToDto(authorJson)
+        val books = libraryService.getBooksByAuthor(author)
+        return BookMapper.booksDtoToJson(books)
     }
 
     private fun validateAuthorName(name: String?): String {

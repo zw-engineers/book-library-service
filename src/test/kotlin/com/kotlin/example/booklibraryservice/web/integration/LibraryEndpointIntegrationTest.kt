@@ -30,12 +30,12 @@ class LibraryEndpointIntegrationTest {
     lateinit var libraryServiceImpl: LibraryServiceImpl
     private val isbn = "123AAD"
     private val title = "Fly to the moon"
-    private val author = AuthorJson("Artemas", "Muzanenhamo")
+    private val authorJson = AuthorJson("Artemas", "Muzanenhamo")
     private val yearPublished: Long = 2004
 
     @Test
     fun `Should add a book to the library`() {
-        val book = BookJson(isbn, title, author, yearPublished)
+        val book = BookJson(isbn, title, authorJson, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
 
@@ -48,7 +48,7 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw BookNotValidException when ISBN is null`() {
-        val book = BookJson(null, title, author, yearPublished)
+        val book = BookJson(null, title, authorJson, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
 
@@ -62,7 +62,7 @@ class LibraryEndpointIntegrationTest {
 
     @Test
     fun `Should throw BookNotValidException when title is null`() {
-        val book = BookJson(isbn, null, author, yearPublished)
+        val book = BookJson(isbn, null, authorJson, yearPublished)
         val mapper = jacksonObjectMapper()
         val json = mapper.writeValueAsString(book)
 
@@ -207,9 +207,21 @@ class LibraryEndpointIntegrationTest {
     }
 
     @Test
-    fun `Should view a book from a given author`() {
+    fun `Should view a book from a given author name`() {
         mockMvc.perform(MockMvcRequestBuilders.get("/book")
                 .param("author-name", "artemas"))
+                .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Should view a book from a given author`() {
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(authorJson)
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/book/author")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json))
                 .andExpect(status().isOk)
     }
 }

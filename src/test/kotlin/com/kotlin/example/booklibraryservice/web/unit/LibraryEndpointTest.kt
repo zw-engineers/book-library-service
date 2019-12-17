@@ -120,7 +120,7 @@ class LibraryEndpointTest {
     }
 
     @Test
-    fun `Should retrieve a book given an author`() {
+    fun `Should retrieve a book given an author's name`() {
         val authorName = "artemas"
         val author = Author("artemas", "smith")
         val book = Book(isbn, title, author, yearPublished)
@@ -136,5 +136,16 @@ class LibraryEndpointTest {
         assertThat(bookJson.title).isEqualTo(title)
         assertThat(bookJson.author).isEqualTo(authorJson)
         assertThat(bookJson.yearPublished).isEqualTo(yearPublished)
+    }
+
+    @Test
+    fun `Should retrieve books given an author`() {
+        val author = Author("artemas", "smith")
+        val books = listOf(Book(isbn, title, author, yearPublished))
+        `when`(libraryServiceMock.getBooksByAuthor(author)).thenReturn(books)
+
+        val booksByAuthor = library.getBookByAuthor(authorJson)
+
+        assertThat(booksByAuthor).isNotEmpty
     }
 }
